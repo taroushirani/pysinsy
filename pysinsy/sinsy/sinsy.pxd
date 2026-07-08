@@ -7,6 +7,9 @@ from libcpp.vector cimport vector
 from .label_strings cimport LabelStrings
 
 cdef extern from "sinsy.h" namespace "sinsy":
+   cdef cppclass IScore:
+      pass
+
    cdef cppclass SynthCondition:
       SynthCondition()
       void setPlayFlag()
@@ -33,5 +36,7 @@ cdef extern from "sinsy.h" namespace "sinsy":
       bool clearScore()
 
       bool loadScoreFromMusicXML(const string& xml)
+
+      bool toScore(IScore&)
 
       size_t get_sampling_frequency()

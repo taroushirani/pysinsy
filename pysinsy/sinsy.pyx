@@ -10,7 +10,7 @@ cimport cython
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from .sinsy cimport sinsy, label_strings
+from .sinsy cimport sinsy, label_strings, note_collector
 
 
 cdef class LabelStrings(object):
@@ -161,6 +161,31 @@ cdef class Sinsy(object):
             xml (str): Path to music xml.
         """
         return self.ptr.loadScoreFromMusicXML(xml)
+
+    def getNotes(self):
+        """Get notes of the currently loaded score
+
+        Returns:
+            list of dict: each entry has keys 'lyric' (str), 'syllabic' (int;
+                0=single, 1=begin, 2=middle, 3=end), 'duration' (int) and
+                'is_rest' (bool), in score order.
+        """
+        cdef note_collector.NoteCollector collector
+        self.ptr.toScore(collector)
+        cdef vector[note_collector.NoteRecord] recs = collector.getNotes()
+        cdef size_t size = recs.size()
+        cdef size_t i
+        cdef note_collector.NoteRecord rec
+        notes = []
+        for i in range(size):
+            rec = recs[i]
+            notes.append({
+                "lyric": rec.lyric,
+                "syllabic": rec.syllabic,
+                "duration": rec.duration,
+                "is_rest": rec.isRest,
+            })
+        return notes
 
     def get_sampling_frequency(self):
         """Get sampling frequency

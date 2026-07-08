@@ -78,3 +78,23 @@ def extract_fullcontext(xml: str) -> list:
     labels = _global_sinsy.createLabelData(False, 1, 1).getData()
     _global_sinsy.clearScore()
     return labels
+
+
+def extract_fullcontext_english(xml_path: str, overrides_path: str = None) -> list:
+    """Extract full-context labels from a music XML file with English lyrics
+
+    This is a thin re-export of :func:`pysinsy.english.extract_fullcontext_english`,
+    imported lazily so that the optional ``g2p_en`` dependency (see the
+    ``english`` extra) is only required when this function is actually called.
+
+    Args:
+        xml_path (str): Path to musicxml file.
+        overrides_path (str, optional): Path to a TSV file of manual
+            word -> syllable-phoneme overrides.
+
+    Returns:
+        list: list of full contexts
+    """
+    from .english import extract_fullcontext_english as _impl
+
+    return _impl(xml_path, overrides_path=overrides_path)

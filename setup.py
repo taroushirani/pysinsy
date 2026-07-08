@@ -68,6 +68,11 @@ for s in [
 include_dirs.append(join(src_top, "include", "sinsy"))
 include_dirs.append(join(src_top, "lib/hts_engine_API/hts_engine/src/include"))
 
+# pysinsy-side C++ glue (e.g. NoteCollector for reading back parsed notes)
+pysinsy_cpp_dir = join("pysinsy", "cpp")
+all_src += glob(join(pysinsy_cpp_dir, "*.cpp"))
+include_dirs.append(join(os.getcwd(), pysinsy_cpp_dir))
+
 # Platform-specific compile flags
 if platform_is_windows or platform_is_macos:
     extra_compile_args = []
@@ -173,6 +178,7 @@ setup(
             "importlib-metadata<5.0",
         ],
         "test": ["pytest", "scipy"],
+        "english": ["g2p_en"],
     },
     classifiers=[
         "Operating System :: POSIX",

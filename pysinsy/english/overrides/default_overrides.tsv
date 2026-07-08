@@ -1,0 +1,8 @@
+# word<TAB>syllable1 phoneme list . syllable2 phoneme list . ...
+# One line per word; syllable boundaries are separated by " . ".
+# This is a small seed file for common function words / heteronyms whose
+# g2p_en pronunciation is ambiguous or whose vowel-nucleus count is easy to
+# get wrong; extend it (or pass your own overrides_path) as needed.
+the	DH AH0
+a	AH0
+an	AE1 N
